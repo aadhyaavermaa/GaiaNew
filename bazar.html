@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrade - Web3 Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #24b611;
+            --dark-blue: #063b09;
+            --neon-blue: #6cff43;
+            --background: #002603;
+            --card-bg: #032600;
+            --text: #ffffff;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(90deg, var(--dark-blue), var(--background));
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            margin-right:100px; /*aadhya*/
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .connect-wallet {
+            background: linear-gradient(45deg, var(--primary-blue), var(--neon-blue));
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        /*aadhya*/
+        .sell-item {
+            background: linear-gradient(45deg, var(--primary-blue), var(--neon-blue));
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .sell-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+        /*aadhya*/
+
+        .connect-wallet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Main Content */
+        .container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(145deg, var(--card-bg), var(--dark-blue));
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid transparent;
+        }
+
+        .tab.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.3);
+        }
+
+        .tab:hover:not(.active) {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.1);
+        }
+
+        /* Product Cards */
+        .marketplace {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, var(--card-bg), var(--dark-blue));
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 102, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--neon-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--neon-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: var(--background);
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .view-more {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .view-more:hover {
+            background: var(--neon-blue);
+            color: var(--background);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #c7d10e;
+            --dark-blue: #003303;
+            --neon-blue: #8aed44;
+            --background: #113a02;
+            --card-bg: #062a03;
+            --text: #ffffff;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+
+        /*aadhya*/
+        /* Toggle Button */
+        .menu-btn {
+            color: black;
+            background: linear-gradient(45deg, var(--primary-blue), var(--neon-blue));
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            border-radius:40px;
+        }
+        
+        /* Menu Container */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Hidden by default */
+            width: 200px;
+            height: 100vh;
+            background:var(--neon-blue);
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+            padding-top: 60px;
+            transition: 0.3s;
+        }
+
+        /* Menu Visible */
+        .menu.active {
+            left: 0;
+        }
+
+        /* Menu Items */
+        .menu a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu a:hover {
+            background:#003303;
+            color: white;
+        }
+        .content.shift {
+            margin-left: 30px; /* Push content to the right */
+        }
+        .content {
+            transition: margin-left 0.3s ease;
+        }
+        /*aadhya ka yahan tak*/
+
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: var(--dark-blue);
+            transition: left 0.3s ease;
+            padding-top: 60px;
+            box-shadow: 2px 0 10px rgba(0, 212, 255, 0.2);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            background: var(--primary-blue);
+        }
+        /* anushka ka start -1 */
+        footer {
+            background-color: #549311;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        .footer-sections {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .footer-section {
+            flex: 1;
+            padding: 10px;
+            min-width: 200px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+        } 
+
+        
+
+        @media (max-width: 768px) {
+            .footer-section {
+                flex: 100%;
+                text-align: center;
+            }
+        }
+        /* anushka ka khtm */
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body><div class="content" id="content">  <!---aadhya-->
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <!-- Toggle Button --> <!---aadhya-->
+            <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+            <!-- Side Menu -->
+            <div class="menu" id="menu">
+                  <a href="#">Home</a>
+                  <a href="#">Market Place</a>
+                  <a href="#">Sell Item</a>
+                  <a href="#">Privacy Center</a>
+                  <a href="#">Help</a>
+                  <a href="#">My Profile</a>
+            </div>
+            <a href="#" class="nav-logo">gaiA</a>
+            <div class="nav-links">
+                <a href="#">Marketplace</a>
+                <a href="#">Explore</a>
+                <a href="#">Community</a>
+                <button class="connect-wallet">Connect Wallet</button>
+                <button class="sell-item">Sell Item</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Stats Section -->
+        <div class="stats-container fade-in">
+            <div class="stat-box">
+                <div class="stat-number" data-value="15720">0</div>
+                <div class="stat-label">Total Trades</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" data-value="8450">0</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" data-value="2500">0</div>
+                <div class="stat-label">Listed Items</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" data-value="950">0</div>
+                <div class="stat-label">Daily Sales</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs fade-in">
+            <button class="tab active">Most Liked</button>
+            <button class="tab">Best Sellers</button>
+            <button class="tab">Top Selling</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="marketplace fade-in">
+            <div class="product-card">
+                <span class="price-tag">2.5 ETH</span>
+                <div class="product-image">Digital Art #1</div>
+                <div class="product-info">
+                    <h3>Cosmic Dreams</h3>
+                    <p>Limited Edition NFT</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <span class="price-tag">1.8 ETH</span>
+                <div class="product-image">Digital Art #2</div>
+                <div class="product-info">
+                    <h3>Neon Horizons</h3>
+                    <p>Exclusive Collection</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <span class="price-tag">3.2 ETH</span>
+                <div class="product-image">Digital Art #3</div>
+                <div class="product-info">
+                    <h3>Cyber Genesis</h3>
+                    <p>Rare Edition</p>
+                </div>
+            </div>
+        </div>
+        <!-- anushka ka start-1 -->
+        <button class="view-more">View More</button>
+        <footer>
+            <div class="footer-sections">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <ul>
+                        This decentralized marketplace connects buyers, sellers, and repairers while promoting sustainability. It provides students and freelancers a platform to eam by offering repair, refurbishing, or creative services. With blockchain-secured transactions, NFT as rewards, and an inclusive community, it reduces waste, supports skill development, and makes sustainable living easy and rewarding.
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <h3>Contact Us</h3>
+                        <p>Email: gaiAofficial@gmail.com</p>
+                        <p>Phone: 9800000000</p>
+                        <p>Address: kashmiri gate,delhi <br>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Social</h4>
+                    <ul>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 gaiA. All rights reserved.</p>
+            </div>
+        </footer>
+    
+        <!-- anushka ka khtm -->
+    </div>
+</div>
+
+    <script>
+        // Animate Numbers
+        function animateNumber(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const interval = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 20);
+        }
+
+        // Initialize number animations
+        document.querySelectorAll('.stat-number').forEach(stat => {
+            const target = parseInt(stat.getAttribute('data-value'));
+            animateNumber(stat, target);
+        });
+
+        // Tab Switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Add fade-in animation to elements as they come into view
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+        //aadhya
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            var content = document.getElementById("content");
+
+            menu.classList.toggle("active"); // Show/Hide sidebar
+            content.classList.toggle("shift"); // Move content aside
+        }
+
+    </script>
+</body>
+</html>

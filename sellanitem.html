@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell an Item - Ethereum Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #1a1a1a;
+            --accent: #00cc69;
+            --background: #0a0a0a;
+            --card-bg: #151515;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .main-content {
+            max-width: 800px;
+            margin: 100px auto 40px;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 24px;
+            border: 1px solid transparent;
+            background-image: 
+                linear-gradient(var(--card-bg), var(--card-bg)), 
+                linear-gradient(to right bottom, #00ff88, #00cc69);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            box-shadow: 0 8px 32px rgba(0, 255, 136, 0.1);
+        }
+
+        .toggle-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .toggle-button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 16px;
+            background: transparent;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button.active {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        .photo-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .photo-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-button {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 16px;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .photo-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .photo-button i {
+            font-size: 1.2rem;
+        }
+
+        #cameraPreview {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            border-radius: 16px;
+            background: #000;
+            margin: 1rem auto;
+            display: none;
+        }
+
+        .preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #imagePreview {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            border-radius: 16px;
+            object-fit: cover;
+            display: none;
+            margin: 1rem auto;
+        }
+
+        .delete-photo {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, #ff8a00, #ff5e00);
+            color: white;
+            padding: 1rem;
+            border-radius: 16px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 138, 0, 0.3);
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .price-inputs input {
+            flex: 1;
+        }
+
+                
+        .footer {
+            background: var(--card-bg);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-about {
+            max-width: 600px;
+        }
+
+        .footer-about h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-about p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="nav-logo">gaiA</a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="marketplace.html"><i class="fas fa-store"></i> Marketplace</a>
+                <a href="community.html"><i class="fas fa-users"></i> Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="toggle-container">
+            <button class="toggle-button active" id="web3Toggle">Web3 Payment</button>
+            <button class="toggle-button" id="traditionalToggle">Cash/UPI/Bank</button>
+        </div>
+
+        <form id="sellForm">
+            <div class="photo-section">
+                <div class="photo-options">
+                    <button type="button" class="photo-button" id="takePhotoBtn">
+                        <i class="fas fa-camera"></i>
+                        Take Photo
+                    </button>
+                    <button type="button" class="photo-button" id="uploadPhotoBtn">
+                        <i class="fas fa-upload"></i>
+                        Upload Photo
+                    </button>
+                </div>
+                <video id="cameraPreview" autoplay playsinline></video>
+                <div class="preview-container">
+                    <img id="imagePreview" src="" alt="Preview">
+                    <button type="button" class="delete-photo" id="deletePhoto">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <input type="file" id="photoInput" accept="image/*" style="display: none">
+            </div>
+
+            <div class="form-group">
+                <label for="itemName">Item Name</label>
+                <input type="text" id="itemName" required placeholder="What are you selling?">
+            </div>
+
+            <div class="form-group">
+                <label for="itemDescription">Description</label>
+                <textarea id="itemDescription" rows="4" required placeholder="Describe your item (condition, features, etc.)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="itemTags">Tags (comma separated)</label>
+                <input type="text" id="itemTags" required placeholder="e.g., electronics, used, vintage">
+            </div>
+
+            <div class="form-group">
+                <label>Price Range (ETH)</label>
+                <div class="price-inputs">
+                    <input type="number" id="minPrice" required placeholder="Min Price" step="0.001">
+                    <input type="number" id="maxPrice" required placeholder="Max Price" step="0.001">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">List Item for Sale</button>
+        </form>
+    </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>About gaiA</h3>
+                    <p>gaiA is pioneering the future of environmental asset trading through blockchain technology. Our platform connects conscious investors with verified environmental projects, making positive impact accessible and transparent. Join us in building a sustainable tomorrow, one transaction at a time.</p>
+                    <div class="social-links">
+                        <a href="#" title="Twitter">Twitter</a>
+                        <a href="#" title="Discord">Discord</a>
+                        <a href="#" title="Telegram">Telegram</a>
+                        <a href="#" title="LinkedIn">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    <script>
+        let stream = null;
+        let photoBlob = null;
+
+        const web3Toggle = document.getElementById('web3Toggle');
+        const traditionalToggle = document.getElementById('traditionalToggle');
+        const takePhotoBtn = document.getElementById('takePhotoBtn');
+        const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+        const photoInput = document.getElementById('photoInput');
+        const cameraPreview = document.getElementById('cameraPreview');
+        const imagePreview = document.getElementById('imagePreview');
+        const deletePhoto = document.getElementById('deletePhoto');
+
+        // Toggle buttons
+        web3Toggle.addEventListener('click', () => {
+            web3Toggle.classList.add('active');
+            traditionalToggle.classList.remove('active');
+        });
+
+        traditionalToggle.addEventListener('click', () => {
+            traditionalToggle.classList.add('active');
+            web3Toggle.classList.remove('active');
+        });
+
+        // Take photo functionality
+        takePhotoBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraPreview.srcObject = stream;
+                cameraPreview.style.display = 'block';
+                imagePreview.style.display = 'none';
+                
+                // Add capture button
+                const captureBtn = document.createElement('button');
+                captureBtn.textContent = 'Capture';
+                captureBtn.className = 'photo-button';
+                captureBtn.style.marginTop = '1rem';
+                cameraPreview.parentNode.insertBefore(captureBtn, cameraPreview.nextSibling);
+                
+                captureBtn.addEventListener('click', () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = cameraPreview.videoWidth;
+                    canvas.height = cameraPreview.videoHeight;
+                    canvas.getContext('2d').drawImage(cameraPreview, 0, 0);
+                    
+                    canvas.toBlob((blob) => {
+                        photoBlob = blob;
+                        imagePreview.src = URL.createObjectURL(blob);
+                        imagePreview.style.display = 'block';
+                        deletePhoto.style.display = 'block';
+                        cameraPreview.style.display = 'none';
+                        captureBtn.remove();
+                        
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+                    });
+                });
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                alert('Unable to access camera. Please check permissions.');
+            }
+        });
+
+        // Upload photo functionality
+        uploadPhotoBtn.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                photoBlob = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    deletePhoto.style.display = 'block';
+                    cameraPreview.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Delete photo functionality
+        deletePhoto.addEventListener('click', () => {
+            photoBlob = null;
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            deletePhoto.style.display = 'none';
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+
+        // Form submission
+        document.getElementById('sellForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!photoBlob) {
+                alert('Please add a photo of your item');
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('itemName').value,
+                description: document.getElementById('itemDescription').value,
+                tags: document.getElementById('itemTags').value,
+                minPrice: document.getElementById('minPrice').value,
+                maxPrice: document.getElementById('maxPrice').value,
+                paymentType: web3Toggle.classList.contains('active') ? 'web3' : 'traditional'
+            };
+
+            // Convert photo to base64 for URL parameter
+            const reader = new FileReader();
+            reader.readAsDataURL(photoBlob);
+            reader.onloadend = () => {
+                const base64Photo = reader.result;
+                
+                // Redirect to confirmation page with all data
+                window.location.href = `confirmation.html?${new URLSearchParams({
+                    ...formData,
+                    photo: base64Photo
+                })}`;
+            };
+        });
+    </script>
+</body>
+</html>

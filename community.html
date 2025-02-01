@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GaiA Community</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: #111;
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #000;
+        }
+
+        .logo {
+            color: #00ff9d;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ff9d;
+        }
+
+        .connect-wallet {
+            background: #ff6b00;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .connect-wallet:hover {
+            transform: scale(1.05);
+        }
+
+        .featured-card {
+            margin: 2rem auto;
+            max-width: 800px;
+            background: #222;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeIn 1s;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 300px;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .featured-content {
+            padding: 1.5rem;
+        }
+
+        .featured-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00ff9d;
+        }
+
+        .show-comments {
+            background: #00ff9d;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .show-comments:hover {
+            transform: scale(1.05);
+        }
+
+        .comments-section {
+            display: none;
+            padding: 1rem;
+            background: #1a1a1a;
+            margin-top: 1rem;
+            border-radius: 5px;
+        }
+
+        .comment {
+            padding: 0.5rem;
+            border-bottom: 1px solid #333;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .sort-controls {
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        select {
+            padding: 0.5rem;
+            background: #333;
+            color: white;
+            border: 1px solid #00ff9d;
+            border-radius: 5px;
+        }
+
+        .card {
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 150px;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .eth-tag {
+            background: #00ff9d;
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">gaiA</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="community.html">Community</a>
+        </div>
+        <button class="connect-wallet">Connect Wallet</button>
+    </nav>
+
+    <div class="featured-card animate__animated animate__fadeIn">
+        <div class="featured-image"><img src="mostliked.jpg" height="100%" width="100%"></div>
+        <div class="featured-content">
+            <h2 class="featured-title">Stone jewellery</h2>
+            <p>Handcrafted from stones</p>
+            <div class="comment-stats">
+                <div class="likes">❤️ 150 likes</div>
+                <div>💬 45 comments</div>
+            </div>
+            <button class="show-comments" onclick="toggleComments('featuredComments')">Show Comments</button>
+            <div class="comments-section" id="featuredComments">
+                <div class="comment">
+                    <p><strong>Aadhya:</strong> Amazing initiative! 🌱</p>
+                </div>
+                <div class="comment">
+                    <p><strong>Anushka:</strong> Just invested in this token. Feeling great!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sort-controls">
+        <select id="sortType" onchange="sortCards()">
+            <option value="likes">Most Liked</option>
+            <option value="comments">Most Commented</option>
+            <option value="price">Price</option>
+        </select>
+        <select id="sortOrder" onchange="sortCards()">
+            <option value="desc">High to Low</option>
+            <option value="asc">Low to High</option>
+        </select>
+    </div>
+
+    <div class="cards-container">
+        <div class="card">
+            <div class="card-image"><img src="firstimg.jpg" height="100%" width="100%"></div>
+            <div class="eth-tag">1.8 ETH</div>
+            <div class="card-content">
+                <h3>Stylish Hobo Bag</h3>
+                <p>Made from artisanal craftsmanship</p>
+                <div class="comment-stats">
+                    <div class="likes">❤️ 150 likes</div>
+                    <div>💬 45 comments</div>
+                </div>
+                <button class="show-comments" onclick="toggleComments('comments1')">Show Comments</button>
+                <div class="comments-section" id="comments1">
+                    <div class="comment">
+                        <p><strong>Anushka:</strong> Great project for our future! 🌿</p>
+                    </div>
+                    <div class="comment">
+                        <p><strong>Aadhya:</strong> The transparency is impressive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image"><img src="secondimg.jpg" height="100%" width="100%"></div>
+            <div class="eth-tag">1.2 ETH</div>
+            <div class="card-content">
+                <h3>Cardboard Crowns and Masks</h3>
+                <p>Handmade cardbook playful mask</p>
+                <div class="comment-stats">
+                    <div class="likes">❤️ 120 likes</div>
+                    <div>💬 30 comments</div>
+                </div>
+                <button class="show-comments" onclick="toggleComments('comments2')">Show Comments</button>
+                <div class="comments-section" id="comments2">
+                    <div class="comment">
+                        <p><strong>Priyanshi:</strong> Solar is the future! ☀️</p>
+                    </div>
+                    <div class="comment">
+                        <p><strong>Ariza:</strong> Amazing returns so far.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image"><img src="thirdimg.jpg" height="100%" width="100%"></div>
+            <div class="eth-tag">0.9 ETH</div>
+            <div class="card-content">
+                <h3>Home Decor</h3>
+                <p>Cute shelves for home decor</p>
+                <div class="comment-stats">
+                    <div class="likes">❤️ 90 likes</div>
+                    <div>💬 25 comments</div>
+                </div>
+                <button class="show-comments" onclick="toggleComments('comments3')">Show Comments</button>
+                <div class="comments-section" id="comments3">
+                    <div class="comment">
+                        <p><strong>Nishtha:</strong> Our oceans need this! 🌊</p>
+                    </div>
+                    <div class="comment">
+                        <p><strong>Anushka:</strong> Great impact metrics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image"><img src="fourthimg.jpg" height="100%" width="100%"></div>
+            <div class="eth-tag">1.5 ETH</div>
+            <div class="card-content">
+                <h3>Jute Bag</h3>
+                <p>Handmade jute bag from sack</p>
+                <div class="comment-stats">
+                    <div class="likes">❤️ 80 likes</div>
+                    <div>💬 20 comments</div>
+                </div>
+                <button class="show-comments" onclick="toggleComments('comments4')">Show Comments</button>
+                <div class="comments-section" id="comments4">
+                    <div class="comment">
+                        <p><strong>Aadhya:</strong> Supporting this project! 🌱</p>
+                    </div>
+                    <div class="comment">
+                        <p><strong>Ariza:</strong> The impact is visible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image"><img src="fifthimg.jpg" height="100%" width="100%"></div>
+            <div class="eth-tag">1.1 ETH</div>
+            <div class="card-content">
+                <h3>Thermocol showpiece</h3>
+                <p>Home decor show piece made by Thermocol</p>
+                <div class="comment-stats">
+                    <div class="likes">❤️ 70 likes</div>
+                    <div>💬 15 comments</div>
+                </div>
+                <button class="show-comments" onclick="toggleComments('comments5')">Show Comments</button>
+                <div class="comments-section" id="comments5">
+                    <div class="comment">
+                        <p><strong>Nishtha:</strong> Wind power is the way! 💨</p>
+                    </div>
+                    <div class="comment">
+                        <p><strong>Priyanshi:</strong> Solid investment choice.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleComments(id) {
+            const comments = document.getElementById(id);
+            comments.style.display = comments.style.display === 'none' ? 'block' : 'none';
+        }
+        function sortCards() {
+            const sortType = document.getElementById('sortType').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+            const container = document.querySelector('.cards-container');
+            const cards = Array.from(container.children);
+
+            const cardData = {
+                'Stylish Hobo Bag': { likes: 150, comments: 45, price: 1.8 },
+                'Cardboard Crowns and Masks': { likes: 120, comments: 30, price: 1.2 },
+                'Home Decor': { likes: 90, comments: 25, price: 0.9 },
+                'Jute Bag': { likes: 80, comments: 20, price: 1.5 },
+                'Thermocol showpiece': { likes: 70, comments: 15, price: 1.1 }
+            };
+
+            cards.sort((a, b) => {
+                const titleA = a.querySelector('h3').textContent;
+                const titleB = b.querySelector('h3').textContent;
+                const valueA = cardData[titleA][sortType];
+                const valueB = cardData[titleB][sortType];
+        
+                return sortOrder === 'asc' ? valueA - valueB : valueB - valueA;
+            });
+
+            container.innerHTML = '';
+            cards.forEach(card => container.appendChild(card));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+               const cards = document.querySelectorAll('.card');
+               cards.forEach((card, index) => {
+                     card.style.animation = `fadeIn 0.5s ease ${index * 0.1}s forwards`;
+                     card.style.opacity = '0';
+               });
+        });
+    </script>
+</body>
+</html>

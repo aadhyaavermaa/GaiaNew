@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereum Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.1/web3.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #1a1a1a;
+            --accent: #00cc69;
+            --background: #0a0a0a;
+            --card-bg: #151515;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        .connect-wallet {
+            background: linear-gradient(45deg, #ff8a00, #ff5e00);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(255, 138, 0, 0.2);
+        }
+
+        .connect-wallet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 138, 0, 0.3);
+        }
+
+        .main-content {
+            max-width: 1400px;
+            margin: 100px auto 40px;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .filters {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: fit-content;
+            transition: all 0.3s ease;
+        }
+        .buy-button {
+            background: linear-gradient(45deg, #ff8a00, #ff5e00); /* Gradient background */
+            color: white; /* Text color */
+            padding: 10px 20px; /* Padding for top/bottom and left/right */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* Remove underline from link */
+            display: inline-block; /* Make it behave like a block element */
+            margin-top: 20px; /* Space above the button */
+            font-weight: bold; /* Bold text */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+            box-shadow: 0 4px 15px rgba(255, 138, 0, 0.2); /* Shadow effect */
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 6px 20px rgba(255, 138, 0, 0.3); /* Darker shadow on hover */
+        }
+
+        .buy-button:active {
+            transform: translateY(0); /* Reset lift on click */
+            box-shadow: 0 4px 15px rgba(255, 138, 0, 0.2); /* Reset shadow on click */
+        }
+
+        @media (max-width: 1024px) {
+            .filters {
+                position: fixed;
+                left: -280px;
+                top: 80px;
+                bottom: 0;
+                width: 280px;
+                overflow-y: auto;
+                z-index: 100;
+            }
+
+            .filters.active {
+                left: 0;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h3 {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-section h3 i {
+            color: var(--primary);
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .filter-option:hover {
+            color: var(--primary);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .filter-option input[type="checkbox"] {
+            accent-color: var(--primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .product-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wallet-status {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="#" class="nav-logo">gaiA</a>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="community.html"><i class="fas fa-users"></i> Community</a>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search NFTs, collections, and accounts...">
+            </div>
+            <button class="connect-wallet" id="connectWallet">Connect Wallet</button>
+            <span class="wallet-status" id="walletStatus"></span>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <aside class="filters" id="filters">
+            <div class="filter-section">
+                <h3><i class="fas fa-tag"></i> Status</h3>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox"> Buy Now
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> On Auction
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> New
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> Has Offers
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3><i class="fas fa-eth"></i> Price Range</h3>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox"> Under 1 ETH
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 1-5 ETH
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 5-10 ETH
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> Above 10 ETH
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3><i class="fas fa-layer-group"></i> Collections</h3>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox"> CryptoPunks
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> Bored Ape YC
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> Art Blocks
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> Doodles
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <main class="products-grid">
+            <div class="product-card">
+                <div class="product-image"><img src="fifthimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <div class="product-title">Thermocol showpiece</div>
+                    <div class="product-meta">
+                        <span>By CryptoArtist</span>
+                        <span>🔥 Hot</span>
+                    </div>
+                    <div class="product-price">2.5 ETH</div>
+                    <a href="product-details.html?id=123" class="buy-button">Buy</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image"><img src="fourthimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <div class="product-title">Jute Bag</div>
+                    <div class="product-meta">
+                        <span>By NFTMaster</span>
+                        <span>⚡ New</span>
+                    </div>
+                    <div class="product-price">1.8 ETH</div>
+                    <a href="product-details.html?id=123" class="buy-button">Buy</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image"><img src="thirdimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <div class="product-title">Home Decor</div>
+                    <div class="product-meta">
+                        <span>By SpaceArtLab</span>
+                        <span>🔥 Hot</span>
+                    </div>
+                    <div class="product-price">3.2 ETH</div>
+                    <a href="product-details.html?id=123" class="buy-button">Buy</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image"><img src="mostliked.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <div class="product-title">Stone jewellery</div>
+                    <div class="product-meta">
+                        <span>By GameArtist</span>
+                        <span>🎯 Rare</span>
+                    </div>
+                    <div class="product-price">4.5 ETH</div>
+                    <a href="product-details.html?id=123" class="buy-button">Buy</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image"><img src="secondimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <div class="product-title">Cardboard crowns and masks</div>
+                    <div class="product-meta">
+                        <span>By AudioCreator</span>
+                        <span>🎵 Audio</span>
+                    </div>
+                    <div class="product-price">1.2 ETH</div>
+                    <a href="product-details.html?id=123" class="buy-button">Buy</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image"><img src="firstimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <div class="product-title">Stylish Hobo Bag</div>
+                    <div class="product-meta">
+                        <span>By PixelMaster</span>
+                        <span>🎨 Art</span>
+                    </div>
+                        <div class="product-price">3 ETH</div>
+                        <a href="product-details.html?id=123" class="buy-button">Buy</a>
+
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const connectWallet = document.getElementById('connectWallet');
+        const walletStatus = document.getElementById('walletStatus');
+        const toast = document.getElementById('toast');
+
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, duration);
+        }
+
+        function isMetaMaskInstalled() {
+            return Boolean(window.ethereum && window.ethereum.isMetaMask);
+        }
+
+        async function checkMetaMaskConnection() {
+            if (isMetaMaskInstalled()) {
+                try {
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_accounts'
+                    });
+                    if (accounts.length > 0) {
+                        handleAccountsChanged(accounts);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+
+        function handleAccountsChanged(accounts) {
+            if (accounts.length === 0) {
+                walletStatus.textContent = '';
+                connectWallet.style.display = 'block';
+            } else {
+                const account = accounts[0];
+                walletStatus.textContent = `${account.slice(0, 6)}...${account.slice(-4)}`;
+                connectWallet.style.display = 'none';
+            }
+        }
+
+        async function connectMetaMask() {
+            if (!isMetaMaskInstalled()) {
+                showToast('Please install MetaMask to connect your wallet');
+                window.open('https://metamask.io', '_blank');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                handleAccountsChanged(accounts);
+                showToast('Wallet connected successfully!');
+            } catch (error) {
+                if (error.code === 4001) {
+                    showToast('Please connect to MetaMask.');
+                } else {
+                    showToast('Error connecting to MetaMask. Please try again.');
+                }
+            }
+        }
+
+        window.addEventListener('load', checkMetaMaskConnection);
+        connectWallet.addEventListener('click', connectMetaMask);
+
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', handleAccountsChanged);
+            window.ethereum.on('chainChanged', () => {
+                window.location.reload();
+            });
+        }
+    </script>
+</body>
+</html>

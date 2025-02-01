@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Listed - Confirmation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --primary-dark: #00cc69;
+            --secondary: #1a1a1a;
+            --accent: #ff6b6b;
+            --background: #0a0a0a;
+            --card-bg: #151515;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+            --gradient: linear-gradient(135deg, #00ff88 0%, #00cc69 100%);
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 2rem;
+        }
+
+        .success-banner {
+            background: var(--gradient);
+            padding: 2rem;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 255, 136, 0.15);
+        }
+
+        .success-banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .success-banner p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .receipt-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .receipt-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .receipt-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .receipt-details {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .receipt-details h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .creators-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .creators-section h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .creator-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .creator-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .creator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 32px rgba(0, 255, 136, 0.1);
+            border-color: var(--primary);
+        }
+
+        .creator-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 2px solid var(--primary);
+        }
+
+        .creator-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .creator-bio {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .view-profile {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .transaction-id {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            margin: 1rem auto;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+
+        
+        .footer {
+            background: var(--card-bg);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-about {
+            max-width: 600px;
+        }
+
+        .footer-about h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-about p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+
+        @media (max-width: 768px) {
+            .receipt-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .creator-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="nav-logo">gaiA</a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="marketplace.html"><i class="fas fa-store"></i> Marketplace</a>
+                <a href="#"><i class="fas fa-users"></i> Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="success-banner">
+            <h1>Item Listed Successfully!</h1>
+            <p>Your item has been listed on the marketplace</p>
+        </div>
+
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <h2>Listing Receipt</h2>
+                <p class="transaction-id">Transaction ID: <span id="txId"></span></p>
+            </div>
+            
+            <div class="receipt-content">
+                <div class="receipt-details">
+                    <h3>Item Details</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Item Name</span>
+                        <span class="detail-value" id="itemName"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Description</span>
+                        <span class="detail-value" id="itemDescription"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Tags</span>
+                        <span class="detail-value" id="itemTags"></span>
+                    </div>
+                </div>
+
+                <div class="receipt-details">
+                    <h3>Pricing Details</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Minimum Price</span>
+                        <span class="detail-value" id="minPrice"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Maximum Price</span>
+                        <span class="detail-value" id="maxPrice"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Listing Fee</span>
+                        <span class="detail-value">0.001 ETH</span>
+                    </div>
+                    <div class="qr-code">
+                        <!-- Placeholder for QR code -->
+                        <svg width="120" height="120" viewBox="0 0 120 120">
+                            <rect width="120" height="120" fill="#000"/>
+                            <path d="M20 20h80v80h-80z" fill="#fff"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="creators-section">
+            <h2>Featured Creators</h2>
+            <div class="creator-cards">
+                <div class="creator-card">
+                    <img src="output.jpg" alt="Creator" class="creator-image">
+                    <h3 class="creator-name">Sushant Shandilya</h3>
+                    <p class="creator-bio">Digital artist specializing in abstract NFT collections</p>
+                    <a href="#" class="view-profile">View Profile</a>
+                </div>
+                <div class="creator-card">
+                    <img src="output (2).jpg" alt="Creator" class="creator-image">
+                    <h3 class="creator-name">Anita Biswas</h3>
+                    <p class="creator-bio">Contemporary artist exploring digital landscapes</p>
+                    <a href="#" class="view-profile">View Profile</a>
+                </div>
+                <div class="creator-card">
+                    <img src="output (3).jpg" alt="Creator" class="creator-image">
+                    <h3 class="creator-name">Annanth Murthy</h3>
+                    <p class="creator-bio">Innovative creator pushing boundaries in digital art</p>
+                    <a href="#" class="view-profile">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>About gaiA</h3>
+                    <p>gaiA is pioneering the future of environmental asset trading through blockchain technology. Our platform connects conscious investors with verified environmental projects, making positive impact accessible and transparent. Join us in building a sustainable tomorrow, one transaction at a time.</p>
+                    <div class="social-links">
+                        <a href="#" title="Twitter">Twitter</a>
+                        <a href="#" title="Discord">Discord</a>
+                        <a href="#" title="Telegram">Telegram</a>
+                        <a href="#" title="LinkedIn">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    <script>
+        // Generate random transaction ID
+        function generateTransactionId() {
+            return '0x' + Array.from(crypto.getRandomValues(new Uint8Array(32)))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('').slice(0, 40);
+        }
+
+        // Populate receipt with URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('itemName').textContent = urlParams.get('name') || 'N/A';
+        document.getElementById('itemDescription').textContent = urlParams.get('description') || 'N/A';
+        document.getElementById('itemTags').textContent = urlParams.get('tags') || 'N/A';
+        document.getElementById('minPrice').textContent = `${urlParams.get('minPrice') || '0'} ETH`;
+        document.getElementById('maxPrice').textContent = `${urlParams.get('maxPrice') || '0'} ETH`;
+        document.getElementById('txId').textContent = generateTransactionId();
+    </script>
+</body>
+</html>

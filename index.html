@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gaiA - Web3 Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.1/web3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #1a1a1a;
+            --accent: #00cc69;
+            --background: #0a0a0a;
+            --card-bg: #151515;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -1px;
+            margin-right: 600px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .connect-wallet {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .connect-wallet:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .wallet-status {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Hidden by default */
+            width: 250px;
+            height: 100%;
+            background: var(--secondary);
+            padding: 2rem;
+            transition: left 0.3s ease;
+            z-index: 999; /* Above other content */
+        }
+
+        .sidebar.active {
+            left: 0; /* Show sidebar */
+        }
+
+        .sidebar a {
+            display: block;
+            color: var(--text);
+            text-decoration: none;
+            padding: 1rem 0;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: var(--primary);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 120px auto 40px;
+            padding: 0 2rem;
+            transition: margin-left 0.3s ease; /* Smooth transition for margin */
+        }
+
+        .container.shifted {
+            margin-left: 250px; /* Shift content when sidebar is active */
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Marketplace */
+        .marketplace {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .product-image {
+            height: 240px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .product-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .price-tag {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        /* Stats Section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box.featured {
+            background: linear-gradient(145deg, var(--card-bg), rgba(0, 255, 136, 0.1));
+            border: 1px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box div:last-child {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--text);
+            transition: 0.3s;
+        }
+
+        .sell-button {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            margin-right: 1rem;
+        }
+
+        .sell-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: var(--card-bg);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-about {
+            max-width: 600px;
+        }
+
+        .footer-about h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-about p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="menu-icon" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <a href="#" class="nav-logo">gaiA</a>
+            <div class="nav-links" id="navLinks">
+                <a href="marketplace.html">Marketplace</a>
+                <a href="community.html">Community</a>
+                <button class="sell-button" id="sellItem"><a href="sellanitem.html">Sell an Item</a></button>
+                <button class="connect-wallet" id="connectWallet">Connect Wallet</button>
+                <span class="wallet-status" id="walletStatus"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <a href="index.html">Home</a>
+        <a href="https://metamask.io/">Profile</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="community.html">Community</a>
+        <a href="sellanitem.html">Sell an item</a>
+        <a href="#">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContent">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Discover, Trade, Thrive</h1>
+            <p>Join the future of digital commerce with our Web3-powered marketplace.</p>
+        </div>
+
+        <!-- Marketplace -->
+        <div class="marketplace">
+            <div class="product-card">
+                <div class="product-image"><img src="mostliked.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <h2 class="featured-title">Stone jewellery</h2>
+                    <p>Handcrafted from stones</p>
+                </div>
+                <div class="price-tag">2.5 ETH</div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image"><img src="fifthimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <h3>Thermocol showpiece</h3>
+                    <p>Home decor show piece made by Thermocol</p>
+                </div>
+                <div class="price-tag">1.8 ETH</div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image"><img src="fourthimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <h3>Jute Bag</h3>
+                    <p>Handmade jute bag from sack</p> 
+                </div>
+                <div class="price-tag">3.2 ETH</div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image"><img src="thirdimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <h3>Home Decor</h3>
+                    <p>Cute shelves for home decor</p>
+                </div>
+                <div class="price-tag">1.5 ETH</div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image"><img src="firstimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <h3>Stylish hobo bag.</h3>
+                    <p>Made from artisanal craftsmanship.</p>
+                </div>
+                <div class="price-tag">2.0 ETH</div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image"><img src="secondimg.jpg" height="100%" width="100%"></div>
+                <div class="product-info">
+                    <h3>Cardboard Crowns and Masks</h3>
+                    <p>Handmade cardbook playful mask</p>
+                </div>
+                <div class="price-tag">1.7 ETH</div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number" data-value="2983">0</div>
+                <div>Active Users</div>
+            </div>
+            <div class="stat-box featured">
+                <div class="stat-number" data-value="3892">0</div>
+                <div>Total Sales</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" data-value="2490">0</div>
+                <div>Items Listed</div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>About gaiA</h3>
+                <p>gaiA is pioneering the future of environmental asset trading through blockchain technology. Our platform connects conscious investors with verified environmental projects, making positive impact accessible and transparent. Join us in building a sustainable tomorrow, one transaction at a time.</p>
+                <div class="social-links">
+                    <a href="#" title="Twitter">Twitter</a>
+                    <a href="#" title="Discord">Discord</a>
+                    <a href="#" title="Telegram">Telegram</a>
+                    <a href="#" title="LinkedIn">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Enhanced MetaMask Detection and Connection
+        const connectWallet = document.getElementById('connectWallet');
+        const walletStatus = document.getElementById('walletStatus');
+        const toast = document.getElementById('toast');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, duration);
+        }
+
+        // Check if MetaMask is installed
+        function isMetaMaskInstalled() {
+            return Boolean(window.ethereum && window.ethereum.isMetaMask);
+        }
+
+        async function checkMetaMaskConnection() {
+            if (isMetaMaskInstalled()) {
+                try {
+                    const accounts = await window.ethereum.request({ 
+                        method: 'eth_accounts',
+                        params: []
+                    });
+                    if (accounts.length > 0) {
+                        handleAccountsChanged(accounts);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+
+        function handleAccountsChanged(accounts) {
+            if (accounts.length === 0) {
+                walletStatus.textContent = '';
+                connectWallet.style.display = 'block';
+            } else {
+                const account = accounts[0];
+                walletStatus.textContent = `${account.slice(0, 6)}...${account.slice(-4)}`;
+                connectWallet.style.display = 'none';
+            }
+        }
+
+        async function connectMetaMask() {
+            if (!isMetaMaskInstalled()) {
+                showToast('Please install MetaMask to connect your wallet');
+                window.open('https://metamask.io', '_blank');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                handleAccountsChanged(accounts);
+                showToast('Wallet connected successfully!');
+            } catch (error) {
+                if (error.code === 4001) {
+                    showToast('Please connect to MetaMask.');
+                } else {
+                    showToast('Error connecting to MetaMask. Please try again.');
+                }
+            }
+        }
+
+        // Event Listeners
+        window.addEventListener('load', checkMetaMaskConnection);
+        connectWallet.addEventListener('click', connectMetaMask);
+
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', handleAccountsChanged);
+            window.ethereum.on('chainChanged', () => {
+                window.location.reload();
+            });
+        }
+
+        // Menu toggle functionality
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('shifted'); // Shift main content
+        });
+
+        // Sell button functionality
+        document.getElementById('sellItem').addEventListener('click', () => {
+            if (!walletStatus.textContent) {
+                showToast('Please connect your wallet first');
+                return;
+            }
+            showToast('Selling feature coming soon!');
+        });
+
+        // Stats counting animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const counters = document.querySelectorAll(".stat-number");
+            const speed = 100; // Adjust speed for animation
+
+            const startCount = (entry) => {
+                if (entry.isIntersecting) {
+                    counters.forEach((counter) => {
+                        let target = +counter.getAttribute("data-value");
+                        let count = 0;
+                        let increment = target / speed;
+
+                        let updateCount = () => {
+                            if (count < target) {
+                                count += increment;
+                                counter.innerText = Math.floor(count);
+                                requestAnimationFrame(updateCount);
+                            } else {
+                                counter.innerText = target; // Ensure it stops at the exact value
+                            }
+                        };
+                        updateCount();
+                    });
+                }
+            };
+
+            let observer = new IntersectionObserver((entries) => {
+                entries.forEach(startCount);
+            }, { threshold: 0.5 });
+
+            counters.forEach((counter) => observer.observe(counter));
+        });
+    </script>
+</body>
+</html>
