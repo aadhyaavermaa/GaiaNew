@@ -6,7 +6,7 @@
     <title>EcoTrade - Web3 Marketplace</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* base styles */
+        
         * {
             margin: 0;
             padding: 0;
@@ -326,7 +326,7 @@
             color: white;
         }
         .content.shift {
-            margin-left: 30px; /* Push content to the right */
+            margin-left: 30px; 
         }
         .content {
             transition: margin-left 0.3s ease;
@@ -425,7 +425,7 @@
         }
     </style>
 </head>
-<body><div class="content" id="content">  <!---aadhya-->
+<body><div class="content" id="content">  
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-content">
@@ -506,7 +506,7 @@
                 </div>
             </div>
         </div>
-        <!-- anushka ka start-1 -->
+
         <button class="view-more">View More</button>
         <footer>
             <div class="footer-sections">
@@ -539,12 +539,12 @@
             </div>
         </footer>
     
-        <!-- anushka ka khtm -->
+
     </div>
 </div>
 
     <script>
-        // Animate Numbers
+
         function animateNumber(element, target) {
             let current = 0;
             const increment = target / 100;
@@ -558,13 +558,12 @@
             }, 20);
         }
 
-        // Initialize number animations
+   
         document.querySelectorAll('.stat-number').forEach(stat => {
             const target = parseInt(stat.getAttribute('data-value'));
             animateNumber(stat, target);
         });
 
-        // Tab Switching
         const tabs = document.querySelectorAll('.tab');
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
@@ -573,7 +572,7 @@
             });
         });
 
-        // Add fade-in animation to elements as they come into view
+       
         const observerOptions = {
             threshold: 0.1
         };
@@ -589,13 +588,13 @@
         document.querySelectorAll('.fade-in').forEach(element => {
             observer.observe(element);
         });
-        //aadhya
+       
         function toggleMenu() {
             var menu = document.getElementById("menu");
             var content = document.getElementById("content");
 
-            menu.classList.toggle("active"); // Show/Hide sidebar
-            content.classList.toggle("shift"); // Move content aside
+            menu.classList.toggle("active"); 
+            content.classList.toggle("shift"); 
         }
 
     </script>
