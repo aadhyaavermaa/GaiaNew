@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gaiA - Freelancer Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #1a1a1a;
+            --accent: #00cc69;
+            --background: #0a0a0a;
+            --card-bg: #151515;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -1px;
+            margin-right: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links .freelancer-link {
+            position: relative;
+            padding-right: 1.5rem;
+            color: var(--primary);
+        }
+
+        .nav-links .freelancer-link::after {
+            content: '🌟';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .connect-wallet {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .connect-wallet:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .sell-button {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            margin-right: 1rem;
+            text-decoration: none;
+        }
+
+        .sell-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #004d29, #00a86b);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(0, 255, 136, 0.1), rgba(0, 168, 107, 0.1));
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .small-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .hero .main-heading {
+            font-size: 3.5rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero .highlight {
+            color: #00ff88;
+            font-weight: 800;
+        }
+
+        /* Add floating animation for visual interest */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero-content {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: rgba(21, 21, 21, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .price-amount {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .card-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .like-button {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .like-button:hover {
+            color: var(--primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(0, 255, 136, 0.1));
+        }
+
+        .become-seller-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--background);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .become-seller-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">gaiA</a>
+            <div class="nav-links">
+                <a href="marketplace.html">Marketplace</a>
+                <a href="community.html">Community</a>
+                <a href="freelancers.html" class="freelancer-link">For Freelancers</a>
+                <a href="sellanitem.html" class="sell-button">Sell an Item</a>
+                <button class="connect-wallet" id="connectWallet">Connect Wallet</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="small-text">Freelance in the Future. Dive into Web3, Earn Beyond Boundaries.</p>
+            <h1 class="main-heading">A SUSTAINABLE SOLUTION FOR <span class="highlight">STUDENTS.</span></h1>
+            <h1 class="main-heading highlight">FREELANCERS.</h1>
+        </div>
+    </section>
+
+    <!-- Product Grid -->
+    <div class="product-grid">
+        <!-- Easter Egg Decorations -->
+        <div class="product-card">
+            <span class="card-tag">FEATURED</span>
+            <img src="fre1.jpg" alt="Easter Egg Decorations" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Easter Egg Decorations</h3>
+                <p class="card-description">Handcrafted pearl-decorated Easter eggs with unique designs</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <span class="price-amount">₹ 150/piece</span>
+                    </div>
+                    <div class="card-action">
+                        <button class="like-button">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vintage Macintosh Repair -->
+        <div class="product-card">
+            <span class="card-tag">TECH EXPERT</span>
+            <img src="fre2.png" alt="Vintage Macintosh" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Vintage Mac Restoration</h3>
+                <p class="card-description">Professional restoration of classic Apple Macintosh computers</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <span class="price-amount">₹ 2000/repair</span>
+                    </div>
+                    <div class="card-action">
+                        <button class="like-button">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Pens -->
+        <div class="product-card">
+            <span class="card-tag">TRENDING</span>
+            <img src="fre3.png" alt="Custom Glitter Pens" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Glitter Pen Customization</h3>
+                <p class="card-description">Personalized glitter pens with custom names and designs</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <span class="price-amount">₹ 80/pen</span>
+                    </div>
+                    <div class="card-action">
+                        <button class="like-button">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resin Earrings -->
+        <div class="product-card">
+            <span class="card-tag">HANDMADE</span>
+            <img src="fre4.jpg" alt="Resin Flower Earrings" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Floral Resin Earrings</h3>
+                <p class="card-description">Handcrafted resin earrings with real dried flowers</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <span class="price-amount">₹ 200/pair</span>
+                    </div>
+                    <div class="card-action">
+                        <button class="like-button">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <a href="sellanitem.html" class="become-seller-btn">BECOME A SELLER →</a>
+    </section>
+
+    <script>
+        // Add any necessary JavaScript here
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('liked');
+                this.textContent = this.classList.contains('liked') ? '❤️' : '🤍';
+            });
+        });
+    </script>
+</body>
+</html> 

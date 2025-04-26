@@ -79,6 +79,21 @@
             color: var(--primary);
         }
 
+        .nav-links .freelancer-link {
+            position: relative;
+            padding-right: 1.5rem;
+        }
+
+        .nav-links .freelancer-link::after {
+            content: '🌟';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
         .connect-wallet {
             background: var(--primary);
             color: var(--background);
@@ -148,67 +163,280 @@
         .hero {
             text-align: center;
             margin-bottom: 4rem;
+            background-image: url('bakg1stpg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 10rem 2rem;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .grid-pattern::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 2px),
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px, 20px 20px, 20px 20px;
+            animation: gridFloat 20s linear infinite;
+        }
+
+        /* Hexagon Grid */
+        .hexagon-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .hexagon {
+            position: absolute;
+            width: 60px;
+            height: 34.64px;
+            background-color: rgba(0, 255, 136, 0.1);
+            margin: 17.32px 0;
+            border-left: solid 1px rgba(0, 255, 136, 0.2);
+            border-right: solid 1px rgba(0, 255, 136, 0.2);
+        }
+
+        .hexagon::before,
+        .hexagon::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+        }
+
+        .hexagon::before {
+            bottom: 100%;
+            border-bottom: 17.32px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .hexagon::after {
+            top: 100%;
+            border-top: 17.32px solid rgba(0, 255, 136, 0.1);
+        }
+
+        @keyframes gridFloat {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(10px) translateX(5px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), #00ffcc);
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), #00ffcc, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            animation: gradientFlow 8s linear infinite;
+            background-size: 200% auto;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
 
         .hero p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
+            color: var(--text);
+            font-size: 1.4rem;
+            max-width: 800px;
             margin: 0 auto;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.5s forwards;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--background), transparent);
+            z-index: 1;
+        }
+
+        /* Add a glowing effect */
+        .hero-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Marketplace */
+        .marketplace-container {
+            position: relative;
+            max-width: 300px;
+            margin: 4rem auto;
+            height: 500px;
+        }
+
         .marketplace {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            position: relative;
+            height: 100%;
+            perspective: 2000px;
+            transform-style: preserve-3d;
         }
 
         .product-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
+            opacity: 0;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        .product-card.active {
+            visibility: visible;
+            opacity: 1;
+            z-index: 5;
+        }
+
+        .product-card .front,
+        .product-card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card .back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: linear-gradient(145deg, var(--card-bg), rgba(0, 255, 136, 0.1));
+        }
+
+        .product-card.flipped {
+            transform: rotateY(180deg);
         }
 
         .product-image {
-            height: 240px;
-            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
+            height: 60%;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 1.2rem;
+            height: 40%;
+            background: linear-gradient(
+                to top,
+                rgba(21, 21, 21, 0.95),
+                rgba(21, 21, 21, 0.8)
+            );
         }
 
-        .product-info h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+        .back-content {
+            text-align: center;
         }
 
-        .product-info p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+        .back-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .back-content p {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .back-content .price {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
         }
 
         .price-tag {
@@ -221,6 +449,77 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
+            transform: translateZ(20px);
+            transition: all 0.3s ease;
+            opacity: 0.9;
+        }
+
+        .product-card:hover .price-tag {
+            transform: translateZ(30px) scale(1.1);
+            opacity: 1;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Add shine effect */
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(255, 255, 255, 0.05) 50%,
+                transparent 100%
+            );
+            transform: skewX(-25deg);
+            transition: left 0.75s ease;
+        }
+
+        .product-card:hover::after {
+            left: 200%;
+        }
+
+        /* Add floating animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotateX(5deg);
+            }
+            50% {
+                transform: translateY(-5px) rotateX(5deg);
+            }
+        }
+
+        .product-card:hover {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Add pulse effect to price tag */
+        @keyframes pricePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 255, 136, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+            }
+        }
+
+        .product-card:hover .price-tag {
+            animation: pricePulse 2s infinite;
+        }
+
+        /* Featured title special styling */
+        .featured-title {
+            background: linear-gradient(to right, var(--primary), #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
         }
 
         /* Stats Section */
@@ -293,46 +592,194 @@
             transform: translateY(-2px);
         }
 
+        /* Enhanced Footer Styles */
         .footer {
-            background: var(--card-bg);
-            padding: 4rem 2rem;
-            margin-top: 4rem;
+            background: linear-gradient(to bottom, var(--card-bg), rgba(21, 21, 21, 0.98));
+            padding: 6rem 2rem 2rem;
+            margin-top: 6rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            opacity: 0.3;
         }
 
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 4rem;
+            position: relative;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
         }
 
         .footer-about {
-            max-width: 600px;
+            max-width: 100%;
         }
 
         .footer-about h3 {
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             font-size: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-about h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
         }
 
         .footer-about p {
             color: var(--text-secondary);
             margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .footer-links h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-links a::before {
+            content: '→';
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+        }
+
+        .newsletter-form {
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: var(--text);
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.1);
+        }
+
+        .newsletter-button {
+            background: var(--primary);
+            color: var(--background);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .newsletter-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
         }
 
         .social-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .social-links a {
+        .social-link {
             color: var(--text);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
         }
 
-        .social-links a:hover {
+        .social-link:hover {
             color: var(--primary);
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom p {
+            margin: 0.5rem 0;
+        }
+
+        .footer-bottom a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
         }
 
         /* Toast Notification */
@@ -359,6 +806,405 @@
                 opacity: 1;
             }
         }
+
+        /* Section Wrapper Styles */
+        .section-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(0, 255, 136, 0.2), transparent);
+            margin: 4rem auto;
+            width: 80%;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(to bottom, transparent, rgba(21, 21, 21, 0.3), transparent);
+            border-radius: 24px;
+            margin: 2rem auto;
+            max-width: 1400px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 8rem 0 6rem;
+            background: rgba(21, 21, 21, 0.3);
+            border-radius: 24px;
+            margin: 6rem auto;
+            position: relative;
+            overflow: hidden;
+            max-width: 1400px;
+        }
+
+        /* Community Voices Section */
+        .community-voices {
+            padding: 8rem 0 6rem;
+            position: relative;
+            background: linear-gradient(to bottom, transparent, rgba(21, 21, 21, 0.3), transparent);
+            border-radius: 24px;
+            margin: 6rem auto;
+            max-width: 1400px;
+        }
+
+        /* Section Background Effects */
+        .section-bg-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .features-section:hover .section-bg-effect,
+        .how-it-works:hover .section-bg-effect,
+        .community-voices:hover .section-bg-effect {
+            opacity: 1;
+        }
+
+        .section-title {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(21, 21, 21, 0.7);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            perspective: 1000px;
+        }
+
+        .step-card {
+            position: relative;
+            padding: 2.5rem;
+            background: rgba(21, 21, 21, 0.7);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .step-card:nth-child(1) { animation-delay: 0.2s; }
+        .step-card:nth-child(2) { animation-delay: 0.4s; }
+        .step-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-card:hover {
+            transform: translateY(-15px) rotateX(10deg);
+            border-color: var(--primary);
+            box-shadow: 
+                0 20px 40px rgba(0, 255, 136, 0.2),
+                0 0 20px rgba(0, 255, 136, 0.1),
+                0 0 0 1px rgba(0, 255, 136, 0.1);
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 255, 136, 0.1) 0%,
+                transparent 100%
+            );
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: var(--background);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .step-card:hover .step-number {
+            transform: scale(1.1) translateZ(20px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover .step-title {
+            color: var(--primary);
+            transform: translateZ(20px);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover .step-description {
+            color: var(--text);
+            transform: translateZ(15px);
+        }
+
+        /* Connecting lines between steps */
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            opacity: 0.3;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        /* Pulse animation for step numbers */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+
+        .step-number {
+            animation: pulse 2s infinite;
+        }
+
+        .step-card:hover .step-number {
+            animation: none;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: rgba(21, 21, 21, 0.7);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--background);
+        }
+
+        .author-info h4 {
+            color: var(--text);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Navigation Controls */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 136, 0.2);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .slider-nav:hover {
+            background: rgba(0, 255, 136, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-nav.prev {
+            left: -60px;
+        }
+
+        .slider-nav.next {
+            right: -60px;
+        }
+
+        .slider-nav i {
+            pointer-events: none;
+        }
+
+        /* Slide Animations */
+        .slide-left-enter {
+            transform: translateX(100%) scale(0.8);
+            opacity: 0;
+        }
+
+        .slide-right-enter {
+            transform: translateX(-100%) scale(0.8);
+            opacity: 0;
+        }
+
+        .slide-left-exit {
+            transform: translateX(-100%) scale(0.8);
+            opacity: 0;
+        }
+
+        .slide-right-exit {
+            transform: translateX(100%) scale(0.8);
+            opacity: 0;
+        }
+
+        /* Dots Navigation */
+        .slider-dots {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body>
@@ -374,6 +1220,7 @@
             <div class="nav-links" id="navLinks">
                 <a href="marketplace.html">Marketplace</a>
                 <a href="community.html">Community</a>
+                <a href="freelancers.html" class="freelancer-link">For Freelancers</a>
                 <button class="sell-button" id="sellItem"><a href="sellanitem.html">Sell an Item</a></button>
                 <button class="connect-wallet" id="connectWallet">Connect Wallet</button>
                 <span class="wallet-status" id="walletStatus"></span>
@@ -388,6 +1235,7 @@
         <a href="https://metamask.io/">Profile</a>
         <a href="marketplace.html">Marketplace</a>
         <a href="community.html">Community</a>
+        <a href="freelancers.html">For Freelancers</a>
         <a href="sellanitem.html">Sell an item</a>
         <a href="#">Logout</a>
     </div>
@@ -396,66 +1244,270 @@
     <div class="container" id="mainContent">
         <!-- Hero Section -->
         <div class="hero">
-            <h1>Discover, Trade, Thrive</h1>
-            <p>Join the future of digital commerce with our Web3-powered marketplace.</p>
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+                <h1>Discover, Trade, Thrive</h1>
+                <p>Join the future of digital commerce with our Web3-powered marketplace.</p>
+            </div>
         </div>
 
         <!-- Marketplace -->
-        <div class="marketplace">
-            <div class="product-card">
-                <div class="product-image"><img src="mostliked.jpg" height="100%" width="100%"></div>
-                <div class="product-info">
-                    <h2 class="featured-title">Stone jewellery</h2>
-                    <p>Handcrafted from stones</p>
+        <div class="marketplace-container">
+            <button class="slider-nav prev" id="prevCard">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="marketplace">
+                <div class="product-card active">
+                    <div class="front">
+                        <div class="product-image">
+                            <img src="mostliked.jpg" alt="Stone jewellery">
+                            <div class="price-tag">2.5 ETH</div>
+                        </div>
+                        <div class="product-info">
+                            <h2 class="featured-title">Stone jewellery</h2>
+                            <p>Handcrafted from stones</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h3>Stone jewellery</h3>
+                            <p>Exquisite handcrafted jewellery made from premium stones. Each piece tells a unique story.</p>
+                            <div class="price">2.5 ETH</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="price-tag">2.5 ETH</div>
+                
+                <div class="product-card">
+                    <div class="front">
+                        <div class="product-image">
+                            <img src="fifthimg.jpg" alt="Thermocol showpiece">
+                            <div class="price-tag">1.8 ETH</div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Thermocol showpiece</h3>
+                            <p>Home decor show piece made by Thermocol</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h3>Thermocol showpiece</h3>
+                            <p>Beautiful home decor piece crafted with precision and creativity.</p>
+                            <div class="price">1.8 ETH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="front">
+                        <div class="product-image">
+                            <img src="fourthimg.jpg" alt="Jute Bag">
+                            <div class="price-tag">3.2 ETH</div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Jute Bag</h3>
+                            <p>Handmade jute bag from sack</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h3>Jute Bag</h3>
+                            <p>Eco-friendly and stylish jute bag, perfect for everyday use.</p>
+                            <div class="price">3.2 ETH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="front">
+                        <div class="product-image">
+                            <img src="thirdimg.jpg" alt="Home Decor">
+                            <div class="price-tag">1.5 ETH</div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Home Decor</h3>
+                            <p>Cute shelves for home decor</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h3>Home Decor</h3>
+                            <p>Elegant shelving solutions to enhance your living space.</p>
+                            <div class="price">1.5 ETH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="front">
+                        <div class="product-image">
+                            <img src="firstimg.jpg" alt="Stylish hobo bag">
+                            <div class="price-tag">2.0 ETH</div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Stylish hobo bag</h3>
+                            <p>Made from artisanal craftsmanship</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h3>Stylish hobo bag</h3>
+                            <p>Artisanal crafted hobo bag with unique design and premium quality.</p>
+                            <div class="price">2.0 ETH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="front">
+                        <div class="product-image">
+                            <img src="secondimg.jpg" alt="Cardboard Crowns and Masks">
+                            <div class="price-tag">1.7 ETH</div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Cardboard Crowns and Masks</h3>
+                            <p>Handmade cardbook playful mask</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h3>Cardboard Crowns and Masks</h3>
+                            <p>Creative and fun cardboard accessories for parties and play.</p>
+                            <div class="price">1.7 ETH</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="product-card">
-                <div class="product-image"><img src="fifthimg.jpg" height="100%" width="100%"></div>
-                <div class="product-info">
-                    <h3>Thermocol showpiece</h3>
-                    <p>Home decor show piece made by Thermocol</p>
-                </div>
-                <div class="price-tag">1.8 ETH</div>
-            </div>
+            <button class="slider-nav next" id="nextCard">
+                <i class="fas fa-chevron-right"></i>
+            </button>
             
-            <div class="product-card">
-                <div class="product-image"><img src="fourthimg.jpg" height="100%" width="100%"></div>
-                <div class="product-info">
-                    <h3>Jute Bag</h3>
-                    <p>Handmade jute bag from sack</p> 
-                </div>
-                <div class="price-tag">3.2 ETH</div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image"><img src="thirdimg.jpg" height="100%" width="100%"></div>
-                <div class="product-info">
-                    <h3>Home Decor</h3>
-                    <p>Cute shelves for home decor</p>
-                </div>
-                <div class="price-tag">1.5 ETH</div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image"><img src="firstimg.jpg" height="100%" width="100%"></div>
-                <div class="product-info">
-                    <h3>Stylish hobo bag.</h3>
-                    <p>Made from artisanal craftsmanship.</p>
-                </div>
-                <div class="price-tag">2.0 ETH</div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image"><img src="secondimg.jpg" height="100%" width="100%"></div>
-                <div class="product-info">
-                    <h3>Cardboard Crowns and Masks</h3>
-                    <p>Handmade cardbook playful mask</p>
-                </div>
-                <div class="price-tag">1.7 ETH</div>
+            <div class="slider-dots">
+                <span class="slider-dot active"></span>
+                <span class="slider-dot"></span>
+                <span class="slider-dot"></span>
+                <span class="slider-dot"></span>
+                <span class="slider-dot"></span>
+                <span class="slider-dot"></span>
             </div>
         </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="section-bg-effect"></div>
+            <div class="section-wrapper">
+                <h2 class="section-title">Why Choose gaiA?</h2>
+                <p class="section-subtitle">Experience the future of sustainable commerce with our innovative platform</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌱</div>
+                        <h3 class="feature-title">Sustainable Impact</h3>
+                        <p class="feature-description">Make a positive environmental impact while trading. Every transaction contributes to reducing waste.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">Secure Transactions</h3>
+                        <p class="feature-description">Blockchain-powered security ensures safe and transparent transactions.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3 class="feature-title">Community Driven</h3>
+                        <p class="feature-description">Join a thriving community of conscious traders and skilled repair experts.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🎁</div>
+                        <h3 class="feature-title">NFT Rewards</h3>
+                        <p class="feature-description">Earn unique NFTs as rewards for your sustainable trading practices.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="section-bg-effect"></div>
+            <div class="section-wrapper">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Start your sustainable trading journey in three simple steps</p>
+                
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Connect Wallet</h3>
+                        <p class="step-description">Link your digital wallet to start trading securely on our platform</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Choose Service</h3>
+                        <p class="step-description">Browse through available items or list your services for repair and refurbishment</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Trade & Earn</h3>
+                        <p class="step-description">Complete transactions and earn rewards while contributing to sustainability</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Community Voices Section -->
+        <section class="community-voices">
+            <div class="section-bg-effect"></div>
+            <div class="section-wrapper">
+                <h2 class="section-title">Community Voices</h2>
+                <p class="section-subtitle">Hear from our satisfied users making a difference</p>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"I've found an amazing community of eco-conscious traders. The platform made it easy to start my repair service business."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">RS</div>
+                            <div class="author-info">
+                                <h4>Aadhya verma</h4>
+                                <p>Electronics Repair Expert</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The NFT rewards make sustainable trading even more exciting. Love how easy it is to find refurbished items."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">AP</div>
+                            <div class="author-info">
+                                <h4>Nishtha</h4>
+                                <p>Sustainable Shopper</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"As a student, I've found a great way to earn while helping others repair and reuse items. The community is super supportive!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">MK</div>
+                            <div class="author-info">
+                                <h4>Anushka Yadav</h4>
+                                <p>Student Entrepreneur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
 
         <!-- Stats Section -->
         <div class="stats-container">
@@ -477,21 +1529,65 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-about">
+            <div class="footer-section footer-about">
                 <h3>About gaiA</h3>
-                <p>gaiA is pioneering the future of environmental asset trading through blockchain technology. Our platform connects conscious investors with verified environmental projects, making positive impact accessible and transparent. Join us in building a sustainable tomorrow, one transaction at a time.</p>
+                <p>gaiA is pioneering the future of environmental asset trading through blockchain technology. Our platform connects conscious investors with verified environmental projects, making positive impact accessible and transparent.</p>
                 <div class="social-links">
-                    <a href="#" title="Twitter">Twitter</a>
-                    <a href="#" title="Discord">Discord</a>
-                    <a href="#" title="Telegram">Telegram</a>
-                    <a href="#" title="LinkedIn">LinkedIn</a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-discord"></i> Discord
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-telegram"></i> Telegram
+                    </a>
                 </div>
             </div>
+
+            <div class="footer-section footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="marketplace.html">Marketplace</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="sellanitem.html">Sell an Item</a></li>
+                    <li><a href="#">How It Works</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section footer-links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                    <li><a href="#">Platform Status</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for the latest updates and features.</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="newsletter-button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 gaiA. All rights reserved.</p>
+            <p>Built with 💚 for a sustainable future</p>
         </div>
     </footer>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
+
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <script>
         // Enhanced MetaMask Detection and Connection
@@ -621,6 +1717,91 @@
             }, { threshold: 0.5 });
 
             counters.forEach((counter) => observer.observe(counter));
+        });
+
+        // Newsletter Form Handling
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            showToast('Thanks for subscribing! We\'ll keep you updated.');
+            this.reset();
+        });
+
+        // Add this to your existing script section
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.product-card');
+            const prevBtn = document.getElementById('prevCard');
+            const nextBtn = document.getElementById('nextCard');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentIndex = 0;
+            let isAnimating = false;
+
+            function updateCards(newIndex, direction) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                const currentCard = cards[currentIndex];
+                const nextCard = cards[newIndex];
+
+                // Remove all transition classes
+                currentCard.classList.remove('slide-left-enter', 'slide-right-enter', 'slide-left-exit', 'slide-right-exit');
+                nextCard.classList.remove('slide-left-enter', 'slide-right-enter', 'slide-left-exit', 'slide-right-exit');
+
+                // Add appropriate transition classes
+                if (direction === 'next') {
+                    currentCard.classList.add('slide-left-exit');
+                    nextCard.classList.add('slide-left-enter');
+                } else {
+                    currentCard.classList.add('slide-right-exit');
+                    nextCard.classList.add('slide-right-enter');
+                }
+
+                // Update active states
+                currentCard.classList.remove('active');
+                nextCard.classList.add('active');
+                dots[currentIndex].classList.remove('active');
+                dots[newIndex].classList.add('active');
+
+                // Reset animation flag after transition
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 600);
+
+                currentIndex = newIndex;
+            }
+
+            function nextCard() {
+                const newIndex = (currentIndex + 1) % cards.length;
+                updateCards(newIndex, 'next');
+            }
+
+            function prevCard() {
+                const newIndex = (currentIndex - 1 + cards.length) % cards.length;
+                updateCards(newIndex, 'prev');
+            }
+
+            // Event Listeners
+            prevBtn.addEventListener('click', prevCard);
+            nextBtn.addEventListener('click', nextCard);
+
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    if (index === currentIndex || isAnimating) return;
+                    const direction = index > currentIndex ? 'next' : 'prev';
+                    updateCards(index, direction);
+                });
+            });
+
+            // Card flip functionality
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Only flip if not clicking navigation
+                    if (!e.target.closest('.slider-nav')) {
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
         });
     </script>
 </body>
