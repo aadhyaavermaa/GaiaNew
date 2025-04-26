@@ -1,3 +1,4 @@
+Deployed link- https://incomparable-lily-76c19a.netlify.app/
 # gaiA - Web3 Marketplace
 
 A sustainable Web3-powered marketplace platform that connects conscious investors with verified environmental projects, making positive impact accessible and transparent.
