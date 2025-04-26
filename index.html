@@ -12,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: none; /* Hide the default cursor */
         }
 
         :root {
@@ -77,21 +78,6 @@
 
         .nav-links a:hover {
             color: var(--primary);
-        }
-
-        .nav-links .freelancer-link {
-            position: relative;
-            padding-right: 1.5rem;
-        }
-
-        .nav-links .freelancer-link::after {
-            content: '🌟';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            opacity: 0.8;
         }
 
         .connect-wallet {
@@ -575,21 +561,25 @@
         }
 
         .sell-button {
-            background: var(--primary);
-            color: var(--background);
-            padding: 0.7rem 1.5rem;
-            border-radius: 12px;
+            color: var(--text);
+            padding: 0;
             border: none;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.95rem;
             margin-right: 1rem;
+            background: none;
         }
 
         .sell-button:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
+            color: var(--primary);
+            transform: none;
+        }
+
+        .sell-button a {
+            color: inherit;
+            text-decoration: none;
         }
 
         /* Enhanced Footer Styles */
@@ -1205,9 +1195,67 @@
             background: var(--primary);
             transform: scale(1.2);
         }
+
+        /* Custom Cursor Styles */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(0, 255, 136, 0.3);
+            animation: cursorPulse 2s infinite;
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        @keyframes cursorPulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Make sure interactive elements show the cursor effect */
+        a, button, input, .product-card, .feature-card, .step-card, .testimonial-card {
+            cursor: none;
+        }
+
+        /* Enhance the hover effect for interactive elements */
+        a:hover, button:hover, .product-card:hover, .feature-card:hover, .step-card:hover, .testimonial-card:hover {
+            cursor: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Add the cursor element at the start of body -->
+    <div class="cursor"></div>
+
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-content">
@@ -1220,7 +1268,7 @@
             <div class="nav-links" id="navLinks">
                 <a href="marketplace.html">Marketplace</a>
                 <a href="community.html">Community</a>
-                <a href="freelancers.html" class="freelancer-link">For Freelancers</a>
+                <a href="freelancers.html">For Freelancers</a>
                 <button class="sell-button" id="sellItem"><a href="sellanitem.html">Sell an Item</a></button>
                 <button class="connect-wallet" id="connectWallet">Connect Wallet</button>
                 <span class="wallet-status" id="walletStatus"></span>
@@ -1801,6 +1849,40 @@
                         this.classList.toggle('flipped');
                     }
                 });
+            });
+        });
+
+        // Add this to your existing script section
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursor = document.querySelector('.cursor');
+            
+            // Update cursor position
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            // Add hover effect for interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, input, .product-card, .feature-card, .step-card, .testimonial-card');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                });
+            });
+
+            // Hide cursor when leaving the window
+            document.addEventListener('mouseleave', () => {
+                cursor.style.display = 'none';
+            });
+
+            // Show cursor when entering the window
+            document.addEventListener('mouseenter', () => {
+                cursor.style.display = 'block';
             });
         });
     </script>
